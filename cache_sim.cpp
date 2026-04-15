@@ -4,17 +4,20 @@
 #include <string>
 using namespace std;
 
+// Cache line structure
 struct CacheLine {
     bool valid;
     int tag;
 };
 
+// Cache Simulator
 int main(int argc, char* argv[]) {
     if (argc != 4) {
         cout << "Usage: ./cache_sim <num_entries> <associativity> <input_memory_reference_file>" << endl;
         return 1;
     }
 
+    // Parses command line arguments
     int num_entries = stoi(argv[1]);
     int associativity = stoi(argv[2]);
     string input_file = argv[3];
@@ -22,6 +25,7 @@ int main(int argc, char* argv[]) {
 
     ifstream infile(input_file);
 
+    // Checks if the input file is opened successfully
     if (!infile.is_open()) {
         cout << "Error opening file: " << input_file << endl;
         return 1;
@@ -29,6 +33,7 @@ int main(int argc, char* argv[]) {
 
     ofstream outfile("cache_sim_output");
 
+    // Checks if the output file is opened successfully
     if (!outfile.is_open()) {
         cout << "Error opening output file: cache_sim_output" << endl;
         return 1;
@@ -50,6 +55,7 @@ int main(int argc, char* argv[]) {
 
     vector<int> next_replace(num_sets, 0);
 
+    // Process memory references
     while (infile >> address) {
         int set_index = address % num_sets;
         int tag = address / num_sets;
